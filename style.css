@@ -5,8 +5,20 @@ body {
 article {
 	float: left;
 	margin-right: 50px;
+	position: relative;
 }
 
 canvas {
 	border: 1px solid black;
+}
+
+h1 {
+	margin-top: 20px;
+}
+
+.timing {
+	position: absolute;
+	top: 20px;
+	right: 0;
+	font-size: .8em;
 }

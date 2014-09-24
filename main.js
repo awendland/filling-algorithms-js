@@ -1,15 +1,17 @@
 window.onload = function () {
-	var size = 3;
-	random(size);
-	bestOf3(size);
+	var demos = document.querySelectorAll("article.fill-demo");
+	for (var i = 0; i < demos.length; i++) {
+		var canvas = demos[i].querySelector("canvas"),
+			timing = demos[i].querySelector("span.timing");
+		bestOf(canvas, canvas.dataset.sampleCount, 3, timing);
+	};
 }
 
-function random(size) {
-	var canvas = document.querySelector('#canvas-rnd'),
-		ctx = canvas.getContext('2d');
+function bestOf(canvas, sampleCount, size, timing) {
+	var ctx = canvas.getContext('2d');
 
-	var height = 400,
-		width = 400;
+	var height = 350,
+		width = 350;
 
 	canvas.width = width;
 	canvas.height = height;
@@ -17,32 +19,9 @@ function random(size) {
 	var points = [];
 
 	setInterval(function randomPoint() {
-		var point = {
-				x: Math.floor(Math.random() * width),
-				y: Math.floor(Math.random() * height)
-			}
-		points.push(point);
-
-		ctx.fillStyle = "red";
-		ctx.fillRect(point.x, point.y, size, size);
-	}, 100);
-}
-
-function bestOf3(size) {
-	var canvas = document.querySelector('#canvas-3'),
-		ctx = canvas.getContext('2d');
-
-	var height = 400,
-		width = 400;
-
-	canvas.width = width;
-	canvas.height = height;
-
-	var points = [];
-
-	setInterval(function randomPoint() {
+		var start = window.performance.now();
 		var testPoints = [];
-		for (var i = 0; i < 3; i++) {
+		for (var i = 0; i < sampleCount; i++) {
 			testPoints.push({
 				x: Math.floor(Math.random() * width),
 				y: Math.floor(Math.random() * height)
@@ -53,7 +32,7 @@ function bestOf3(size) {
 
 		var best = {
 			dist: 0,
-			point: null
+			point: testPoints[0]
 		}
 		function distsToPoints(x, y, points) {
 			var dists = [];
@@ -76,5 +55,8 @@ function bestOf3(size) {
 
 		ctx.fillStyle = "red";
 		ctx.fillRect(best.point.x, best.point.y, size, size);
+		// Print timing
+		var timeElapsed = Math.floor((window.performance.now() - start) * 1000);
+		timing.textContent = timeElapsed + " μs";
 	}, 100);
 }
