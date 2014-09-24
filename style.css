@@ -1,0 +1,12 @@
+body {
+	padding: 100px;
+}
+
+article {
+	float: left;
+	margin-right: 50px;
+}
+
+canvas {
+	border: 1px solid black;
+}
