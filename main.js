@@ -7,6 +7,18 @@ window.onload = function () {
 	};
 }
 
+// http://jsperf.com/math-min-apply-vs-loop/2
+function arrayMin(arr) {
+	var min = arr[0],
+		length = arr.length
+	for (var i = length - 1; i >= 0; i--) {
+		if (arr[i] < min) {
+			min = arr[i];
+		}
+	}
+	return min;
+}
+
 function bestOf(canvas, sampleCount, size, timing) {
 	var ctx = canvas.getContext('2d');
 
@@ -45,7 +57,7 @@ function bestOf(canvas, sampleCount, size, timing) {
 		}
 		for (var i = 0; i < testPoints.length; i++) {
 			var dists = distsToPoints(testPoints[i].x, testPoints[i].y, points);
-			var min = Math.min.apply(Math, dists);
+			var min = arrayMin(dists);
 			if (best.dist < min) {
 				best.dist = min;
 				best.point = testPoints[i]
