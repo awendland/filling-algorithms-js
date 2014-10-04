@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>TEC Club - Technology, Entrepreneurship, Coding</title>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
+	<style type="text/css">
+		body {
+			height: 100vh;
+			width: 100vw;
+		}
+		canvas {
+
+		}
+	</style>
+	<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<script src="../../src/rnd-fill.js"></script>
+</head>
+
+<body id="home">
+	<canvas></canvas>
+
+	<script>
+		var canvas = document.querySelector('canvas');
+		var width = document.body.clientWidth,
+			height = document.body.clientHeight;
+		canvas.width = width;
+		canvas.height = height;
+		var ctx = canvas.getContext('2d');
+
+		ctx.fillStyle = 'white';
+		ctx.fillRect(0, 0, width, height);
+
+		var points = [];
+
+		setInterval(function randomPoint() {
+			var result = RndFill.bestOf(points, 10, width, height);
+			for (var i = 0; i < result.testPoints.length; i++) {
+				ctx.fillStyle = '#ccc';
+				ctx.fillRect(result.testPoints[i].x, result.testPoints[i].y, 1, 1);
+			};
+			points.push(result.best);
+
+			ctx.fillStyle = 'black';
+			ctx.fillRect(result.best.x, result.best.y, 2, 2);
+		}, 1);
+	</script>
+</body>
+</html>
