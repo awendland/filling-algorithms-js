@@ -21,7 +21,7 @@ function bestOf(canvas, sampleCount, size, timing) {
 	setInterval(function randomPoint() {
 		var start = window.performance.now();
 		var result = RndFill.bestOf(points, sampleCount, width, height);
-		for (var i = 0; i < result.testPoints; i++) {
+		for (var i = 0; i < result.testPoints.length; i++) {
 			ctx.fillStyle = "#eee";
 			ctx.fillRect(result.testPoints[i].x, result.testPoints[i].y, 2, 2);
 		};
