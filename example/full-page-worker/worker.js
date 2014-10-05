@@ -1,4 +1,4 @@
-importScripts('http://rawgithub.com/awendland/filling-algorithms-js/master/src/rnd-fill.js');
+importScripts('//rawgithub.com/awendland/filling-algorithms-js/master/src/rnd-fill.js');
 onmessage = function (oEvent) {
 	var points = [],
 		width = oEvent.data.width,
