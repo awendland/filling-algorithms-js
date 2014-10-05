@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<title>TEC Club - Technology, Entrepreneurship, Coding</title>
+	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/normalize/3.0.1/normalize.min.css">
+	<style type="text/css">
+		body {
+			height: 100vh;
+			width: 100vw;
+		}
+		canvas, img {
+			height: 400px;
+		}
+	</style>
+	<!--[if IE]>
+		<script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+</head>
+
+<body id="home">
+	<canvas></canvas>
+	<img src="flower.jpg">
+
+	<script>
+		var pixelSize = 3;
+
+		var canvas = document.querySelector('canvas');
+		var ctx = canvas.getContext('2d');
+
+		var img = new Image();
+		img.onload = imageLoaded;
+		img.src = "flower.jpg";
+
+		function imageLoaded() {
+			var width = img.width,
+				height = img.height;
+			canvas.width = width;
+			canvas.height = height;
+
+			ctx.drawImage(img, 0, 0);
+
+			var imageData = ctx.getImageData(0,0,width,height),
+				pixel2d = [];
+			for (var imageOffset = 0; imageOffset < imageData.data.length; imageOffset += 4) {
+				var y = Math.floor((imageOffset / 4) / width),
+					x = (imageOffset / 4) % width;
+				if (pixel2d.length - 1 < y) {
+					pixel2d.push([]);
+				}
+				pixel2d[y][x] = [imageData.data[imageOffset], imageData.data[imageOffset + 1], imageData.data[imageOffset + 2], imageData.data[imageOffset + 3]];
+			}
+
+			ctx.fillRect(0,0,width, height);
+
+			var myWorker = new Worker("worker.js");
+
+			myWorker.addEventListener("message", function (event) {
+				var result = event.data;
+				var pixel = pixel2d[result.y][result.x];
+				ctx.fillStyle = 'rgb(' + pixel[0] + ',' + pixel[1] + ',' + pixel[2] + ')';
+				ctx.fillRect(result.x, result.y, pixelSize, pixelSize);
+			}, false);
+
+			myWorker.postMessage({
+				width: width,
+				height: height,
+				pixelSize: pixelSize
+			}); // start the worker.
+		}
+	</script>
+</body>
+</html>
