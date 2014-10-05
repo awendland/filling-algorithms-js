@@ -22,3 +22,8 @@ h1 {
 	right: 0;
 	font-size: .8em;
 }
+
+.others {
+	float: left;
+	margin-top: 2em;
+}
